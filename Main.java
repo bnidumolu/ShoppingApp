@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import Product.ProductCatalog;
+import Product.ProductFactory;
 import User.AuthenticateUser;
 
 public class Main {
@@ -28,11 +30,13 @@ public class Main {
                }
                break;
             case 2:
+               System.out.println("Enter Email:");
+               String email = scanner.nextLine();
                System.out.println("Enter username:");
                username = scanner.nextLine();
                System.out.println("Enter Password:");
                String newPassword = scanner.nextLine();
-               authenticator.addUser(username, newPassword);
+               authenticator.addUser(username, newPassword, email);
                System.out.println("Signup successful! Please proceed!!!");
                loginFlag = false;
                break;
@@ -41,6 +45,12 @@ public class Main {
                break;
          }
       } while (loginFlag);
+
+      if (!loginFlag) {
+         ProductCatalog catalog = new ProductCatalog();
+         catalog.addProduct(ProductFactory.createProduct("Electronics", 1, "Laptop", 1000.00));
+         catalog.addProduct(ProductFactory.createProduct("Clothing", 2, "T-shirt", 20.00));
+      }
       scanner.close();
    }
 }
