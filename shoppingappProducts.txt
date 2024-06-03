@@ -1,0 +1,5 @@
+Electronics,1,TV,230
+Electronics,2,IPhone,999
+Electronics,3,Laptop,1299
+Clothing,1,Shirt,69
+Clothing,2,Jacket,99

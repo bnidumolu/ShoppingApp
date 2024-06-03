@@ -1,7 +1,11 @@
+import java.util.List;
 import java.util.Scanner;
 
+import Payment.PaymentProcessor;
+import Product.Product;
 import Product.ProductCatalog;
-import Product.ProductFactory;
+import ShoppingCart.CartBuilder;
+import ShoppingCart.ShoppingCart;
 import User.AuthenticateUser;
 
 public class Main {
@@ -10,6 +14,8 @@ public class Main {
       System.out.println("Welcome to Shopper App");
       System.out.println("Use below options to log in to the application.");
       Scanner scanner = new Scanner(System.in);
+      ShoppingCart cart = ShoppingCart.getInstance();
+      PaymentProcessor paymentProcessor = new PaymentProcessor();
       String username = "";
       boolean loginFlag = true;
       do {
@@ -47,9 +53,58 @@ public class Main {
       } while (loginFlag);
 
       if (!loginFlag) {
+         // Initialize ProductCatalog
          ProductCatalog catalog = new ProductCatalog();
-         catalog.addProduct(ProductFactory.createProduct("Electronics", 1, "Laptop", 1000.00));
-         catalog.addProduct(ProductFactory.createProduct("Clothing", 2, "T-shirt", 20.00));
+         System.out.println("Please choose from the below available Products:");
+         List<Product> allProducts = catalog.getAllProducts();
+
+         for (Product product : allProducts) {
+            System.out.println(product.getId() + " - " + product.getName());
+         }
+         CartBuilder cartBuilder = new CartBuilder();
+
+         System.out.println("Please add items to the cart (enter product id to add, 0 to finish):");
+         int input;
+         boolean inputFlag = true;
+         do {
+            input = scanner.nextInt();
+            if (input == 0) {
+               inputFlag = false;
+               break;
+            }
+            Product product = catalog.getProduct(input);
+            if (product != null) {
+               cartBuilder = cartBuilder.addItem(product);
+               System.out.println(input + " added to cart.");
+            } else {
+               System.out.println("Product not found.");
+            }
+         } while (inputFlag);
+
+         // System.out.println("Enter the address");
+         // String customerAddress = scanner.nextLine();
+         // cartBuilder = cartBuilder.setCustomerName(loginUsername);
+         // cartBuilder = cartBuilder.setCustomerAddress(customerAddress);
+         cart = cartBuilder.build();
+
+         System.out.println("Cart Contents:");
+         List<Product> cartItems = cart.getItems();
+         for (Product product : cartItems) {
+            System.out.println(product.getName());
+         }
+
+         double totalAmount = cart.calculateTotal();
+
+         System.out.println("Place order? (yes/no):");
+         String placeOrderInput = scanner.nextLine();
+         if (placeOrderInput.equals("yes")) {
+            System.out.println("Payment processing...");
+            paymentProcessor.processPayment(totalAmount);
+            System.out.println("Order placed successfully!");
+            cart = null;
+         } else {
+            System.out.println("Order not placed.");
+         }
       }
       scanner.close();
    }
