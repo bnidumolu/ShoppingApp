@@ -44,6 +44,7 @@ public class Main {
                String newPassword = scanner.nextLine();
                authenticator.addUser(username, newPassword, email);
                System.out.println("Signup successful! Please proceed!!!");
+               Logger.log("User " + username + " a new account created.");
                loginFlag = false;
                break;
             default:
@@ -53,6 +54,7 @@ public class Main {
       } while (loginFlag);
 
       if (!loginFlag) {
+         Logger.log("User " + username + " logged in to Shopping App.");
          // Initialize ProductCatalog
          ProductCatalog catalog = new ProductCatalog();
          System.out.println("Please choose from the below available Products:");
@@ -68,6 +70,7 @@ public class Main {
          boolean inputFlag = true;
          do {
             input = scanner.nextInt();
+            scanner.nextLine();
             if (input == 0) {
                inputFlag = false;
                break;
@@ -75,7 +78,7 @@ public class Main {
             Product product = catalog.getProduct(input);
             if (product != null) {
                cartBuilder = cartBuilder.addItem(product);
-               System.out.println(input + " added to cart.");
+               System.out.println(product.getName() + " added to cart.");
             } else {
                System.out.println("Product not found.");
             }
@@ -88,21 +91,27 @@ public class Main {
          cart = cartBuilder.build();
 
          System.out.println("Cart Contents:");
+         String cartItemsOp = "";
          List<Product> cartItems = cart.getItems();
          for (Product product : cartItems) {
             System.out.println(product.getName());
+            cartItemsOp += product.getName() + ", ";
          }
-
+         cartItemsOp.substring(0, cartItemsOp.length() - 2);
+         Logger.log("User " + username + " selected these items: " + cartItemsOp);
          double totalAmount = cart.calculateTotal();
 
          System.out.println("Place order? (yes/no):");
-         String placeOrderInput = scanner.nextLine();
-         if (placeOrderInput.equals("yes")) {
+         String orderIp = scanner.nextLine();
+         if (orderIp.equals("yes")) {
             System.out.println("Payment processing...");
             paymentProcessor.processPayment(totalAmount);
+            Logger.log("User " + username + " payment processed for amount: " + totalAmount);
             System.out.println("Order placed successfully!");
+            Logger.log("User " + username + " order placed successfully!");
             cart = null;
          } else {
+            Logger.log("User " + username + " order not placed successfully!");
             System.out.println("Order not placed.");
          }
       }

@@ -1,0 +1,8 @@
+Jun 03, 2024 8:49:27 PM Logger log
+INFO: User bnidumol logged in to Shopping App.
+Jun 03, 2024 8:49:31 PM Logger log
+INFO: User bnidumol selected these items: TV, IPhone, 
+Jun 03, 2024 8:49:38 PM Logger log
+INFO: User bnidumol payment processed for amount: 1229.0
+Jun 03, 2024 8:49:38 PM Logger log
+INFO: User bnidumol order placed successfully!
