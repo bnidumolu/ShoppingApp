@@ -12,11 +12,6 @@ public class ProductCatalog {
       getProductsFromFile();
    }
 
-   public void addProduct(Product product) {
-      products.add(product);
-      saveProductsToFile();
-   }
-
    public Product getProduct(int productId) {
       for (Product product : products) {
          if (product.getId() == productId) {
@@ -48,15 +43,4 @@ public class ProductCatalog {
       }
    }
 
-   private void saveProductsToFile() {
-      try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
-         for (Product product : products) {
-            String type = product.getClass().getSimpleName();
-            bw.write(type + "," + product.getId() + "," + product.getName() + "," + product.getPrice());
-            bw.newLine();
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-   }
 }

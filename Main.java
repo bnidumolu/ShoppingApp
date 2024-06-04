@@ -84,10 +84,6 @@ public class Main {
             }
          } while (inputFlag);
 
-         // System.out.println("Enter the address");
-         // String customerAddress = scanner.nextLine();
-         // cartBuilder = cartBuilder.setCustomerName(loginUsername);
-         // cartBuilder = cartBuilder.setCustomerAddress(customerAddress);
          cart = cartBuilder.build();
 
          System.out.println("Cart Contents:");
@@ -107,7 +103,7 @@ public class Main {
             System.out.println("Payment processing...");
             paymentProcessor.processPayment(totalAmount);
             Logger.log("User " + username + " payment processed for amount: " + totalAmount);
-            System.out.println("Order placed successfully!");
+            cart.checkout();
             Logger.log("User " + username + " order placed successfully!");
             cart = null;
          } else {
